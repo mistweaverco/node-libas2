@@ -41,3 +41,63 @@ import { AS2Composer } from '@mistweaverco/libas2';
 - Complete support for AS2 protocol 1.0 [per RFC 4130](https://tools.ietf.org/html/rfc4130)
 - Rich cryptography support based on [PKIjs](https://github.com/PeculiarVentures/PKI.js)
 - Rich MIME support based on [Nodemailer](https://github.com/nodemailer/nodemailer) and [Emailjs](https://github.com/emailjs/emailjs-mime-parser)
+
+## Examples
+
+```typescript
+
+import {
+  AS2Constants,
+  AS2Composer,
+  type AS2ComposerOptions,
+  request
+} from '@mistweaverco/libas2';
+import { configuration } from './config';
+import fs from 'fs';
+
+const LIBAS2_CERT = fs.readFileSync('certificate.crt', 'utf8')
+const LIBAS2_KEY = fs.readFileSync('certificate.key', 'utf8');
+const LIBAS2_CERT_AMAZON = fs.readFileSync('certificate-amazon.crt', 'utf8')
+
+const options: AS2ComposerOptions = {
+  message: {
+    filename: 'msg.edifact',
+    contentType: 'application/EDIFACT',
+    content: ediMessage,
+  },
+  agreement: {
+    host: {
+      name: `MWCO ${configuration.region}`,
+      id: 'MWCEDIAS24007',
+      url: 'http://35.207.79.189:8085',
+      certificate: LIBAS2_CERT,
+      privateKey: LIBAS2_KEY,
+      decrypt: false,
+      sign: true,
+      mdn: {
+        async: false,
+        signing: AS2Constants.SIGNING.SHA256
+      }
+    },
+    partner: {
+      name: 'Amazon',
+      id: 'SE1Y1CG1Q1OF1QT',
+      url: 'http://as2-eu.amazonsedi.com/a331d41b-e681-461c-b40f-db6b143b213b',
+      file: 'EDIFACT',
+      certificate: LIBAS2_CERT_AMAZON,
+      encrypt: AS2Constants.ENCRYPTION.AES128_GCM,
+      verify: true
+    }
+  },
+}
+
+const composer = new AS2Composer({
+  message: options.message,
+  agreement: options.agreement,
+})
+
+const result = await request(await composer.toRequestOptions())
+const mdn = await result.mime()
+const message = await mdn.verify({ cert: LIBAS2_CERT_AMAZON })
+console.log('MDN received:', message);
+```
