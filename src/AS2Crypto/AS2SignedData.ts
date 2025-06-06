@@ -117,7 +117,7 @@ export class AS2SignedData {
       return rsaPssId
     }
 
-    return certificate.signatureAlgorithm.algorithmId
+    return certificate.subjectPublicKeyInfo.algorithm.algorithmId
   }
 
   private async _addSigner ({ cert, key, algorithm }: SignMethodOptions) {

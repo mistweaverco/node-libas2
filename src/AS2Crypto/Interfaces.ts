@@ -11,6 +11,12 @@ export type AS2Encryption =
   | 'aes192-GCM'
   | 'aes256-GCM'
 
+export type AS2OaepHashAlgorithm =
+  | 'sha-1'
+  | 'sha-256'
+  | 'sha-384'
+  | 'sha-512'
+
 export interface EncryptionOptions {
   /** PEM-based public certificate contents. */
   cert: string | Buffer | PemFile

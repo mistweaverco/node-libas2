@@ -3,7 +3,7 @@ import * as pkijs from 'pkijs/build/index'
 import { Crypto } from '@peculiar/webcrypto'
 import { PemFile } from './PemFile'
 import { ObjectID } from './LibOid'
-import { AS2Encryption } from './Interfaces'
+import { AS2Encryption, AS2OaepHashAlgorithm } from './Interfaces'
 import { privateDecrypt, createPrivateKey, constants } from 'crypto'
 
 const webcrypto = new Crypto()
@@ -300,11 +300,11 @@ export class AS2EnvelopedData {
     }
   }
 
-  async encrypt (cert: string | Buffer | PemFile, encryption: AS2Encryption) {
+  async encrypt (cert: string | Buffer | PemFile, encryption: AS2Encryption, oaepHashAlgorithm: AS2OaepHashAlgorithm = 'sha-1') {
     const certificate = this._toCertificate(cert)
     const encryptionAlgorithm = this._getEncryptionAlgorithm(encryption)
 
-    this.enveloped.addRecipientByCertificate(certificate)
+    this.enveloped.addRecipientByCertificate(certificate, { oaepHashAlgorithm });
 
     if (encryption === 'des-EDE3-CBC') {
       await this._extendedEncrypt(this.data, encryptionAlgorithm)

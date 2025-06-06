@@ -1,5 +1,5 @@
 import { AS2MimeNodeOptions } from '../AS2MimeNode'
-import { AS2Encryption, AS2Signing, PemFile } from '../AS2Crypto'
+import { AS2Encryption, AS2Signing, PemFile, AS2OaepHashAlgorithm } from '../AS2Crypto'
 import { AS2Headers } from '../Interfaces'
 
 export type PartnerFileType = 'EDIX12' | 'EDIFACT' | 'XML'
@@ -50,6 +50,8 @@ export interface AgreementOptions {
     file?: PartnerFileType | string
     /** The certificate of the partner in PEM format. Required for signing or decrypting. */
     certificate?: string | Buffer | PemFile
+    /** The OAEP hash algorithm to use for encryption. */
+    oaepHashAlgorithm?: AS2OaepHashAlgorithm
     /** Partner requires host to encrypt messages sent to the partner. */
     encrypt?: AS2Encryption | boolean
     /** Partner requires host to verify messages sent from the partner. */

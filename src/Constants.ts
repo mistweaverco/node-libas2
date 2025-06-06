@@ -1,4 +1,4 @@
-import { AS2Encryption, AS2Signing } from './AS2Crypto'
+import { AS2Encryption, AS2Signing, AS2OaepHashAlgorithm } from './AS2Crypto'
 import { dirname, resolve } from 'path'
 import { readFileSync } from 'fs'
 
@@ -25,6 +25,40 @@ const { alternateName, version } = getPackageJson()
  * @namespace AS2Constants
  */
 export const AS2Constants = {
+  /** Constants used for encryption.
+   * @namespace AS2Constants.OAEP_HASH_ALGORITHMS
+   */
+  OAEP_HASH_ALGORITHMS: {
+    /**
+     * @constant
+     * @type {AS2OaepHashAlgorithm}
+     * @default
+     */
+    SHA1: 'sha-1',
+    /**
+     * @constant
+     * @type {AS2OaepHashAlgorithm}
+     * @default
+     */
+    SHA256: 'sha-256',
+    /**
+     * @constant
+     * @type {AS2OaepHashAlgorithm}
+     * @default
+     */
+    SHA384: 'sha-384',
+    /**
+     * @constant
+     * @type {AS2OaepHashAlgorithm}
+     * @default
+     */
+    SHA512: 'sha-512'
+  } as {
+    SHA1: AS2OaepHashAlgorithm
+    SHA256: AS2OaepHashAlgorithm
+    SHA384: AS2OaepHashAlgorithm
+    SHA512: AS2OaepHashAlgorithm
+  },
   /** Constants used for signing.
    * @namespace AS2Constants.ENCRYPTION
    */

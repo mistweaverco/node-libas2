@@ -85,7 +85,8 @@ const options: AS2ComposerOptions = {
       url: 'http://as2-eu.amazonsedi.com/a331d41b-e681-461c-b40f-db6b143b213b',
       file: 'EDIFACT',
       certificate: LIBAS2_CERT_AMAZON,
-      encrypt: AS2Constants.ENCRYPTION.AES128_GCM,
+      encrypt: AS2Constants.ENCRYPTION.AES128_CBC,
+      oaepHashAlgorithm: AS2Constants.OAEP_HASH_ALGORITHMS.SHA1,
       verify: true
     }
   },
